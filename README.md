@@ -1,6 +1,6 @@
 # Enhancing IoV Security Using Lightweight Cryptographic Algorithm - ASCON
 
-This project proposes a two‑layer security framework for Internet of Vehicles (IoV) environments that combines a lightweight cryptographic algorithm, ASCON, for securing vehicular communication, with a machine learning‑based Network Intrusion Detection System (NIDS) for securing vehicular networks.
+This project proposes a two-layer security framework for Internet of Vehicles (IoV) environments. It combines the lightweight cryptographic algorithm, ASCON, with a machine-learning-based Network Intrusion Detection System (NIDS) to secure both vehicular communication and vehicular networks.
 
 ---
 
@@ -25,7 +25,7 @@ This project proposes a two‑layer security framework for Internet of Vehicles 
 ---
 
 ## Project Overview
-This project presents a comprehensive security framework developed to strengthen the Internet of Vehicles (IoV) ecosystem. The framework addresses two fundamental aspects of IoV security:
+This project presents a comprehensive security framework designed to strengthen the Internet of Vehicles (IoV) ecosystem. The framework addresses two fundamental aspects of IoV security:
 
 - **Vehicular Communication Security:** Implementation of the lightweight cryptographic algorithm, ASCON, to secure data transmission between vehicles and infrastructure.
 - **Vehicular Network Security:** Integration of a Network Intrusion Detection System (NIDS) using a machine learning-based ensemble voting classifier to ensure anomaly detection and resilience against cyberattacks.
@@ -35,14 +35,14 @@ The proposed approach was validated through encrypted image transmission among m
 ---
 
 ## Hardware Components
-This project was implemented and validated using Raspberry Pi 4 Model B boards, which served as vehicle nodes (senders) for securely transmitting image data. Each Raspberry Pi node performed the following tasks:
+This project was implemented and validated using Raspberry Pi 4 Model B boards, which served as vehicle nodes (senders) for securely transmitting image data. Each Raspberry Pi node performs the following tasks:
 
 - Encryption of raw image data using the ASCON encryption algorithm.
 - Transmission of encrypted data to the central receiver node (server) using the MQTT protocol.
 
 Additionally, a camera module can be integrated with the Raspberry Pi board to capture real-time image data and further validate system performance.   
 
-_(**Note:** In this implementation, offline images were used to validate the proposed framework.)_
+_(**NOTE:** In this implementation, offline images were used to validate the proposed framework.)_
 
 ---
 
@@ -202,7 +202,7 @@ Confusion matrices and learning curves are plotted to visualize classifier perfo
 
 **Directory:** [Algorithms](Algorithms/)
 
-This folder contains notebooks implementing lightweight cryptographic algorithms - PRESENT, TEA, and ASCON - for image encryption. An image encryption implementation using the AES algorithm is also included as a benchmark for performance comparison against ASCON, even though AES is not considered lighweight.
+This folder contains notebooks implementing lightweight cryptographic algorithms - PRESENT, TEA, and ASCON - for image encryption. An image encryption implementation using the AES algorithm is also included as a benchmark for comparison against ASCON, even though AES is not considered a lighweight algorithm.
 
 Each script computes standard image encryption quality metrics such as:
 - NPCR (Number of Pixels Change Rate)
