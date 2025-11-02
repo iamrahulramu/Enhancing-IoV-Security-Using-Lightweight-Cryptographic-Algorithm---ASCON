@@ -1,0 +1,11 @@
+cryptography
+cv2
+matplotlib
+notebook
+numpy
+paho-mqtt
+pillow
+scikit-learn
+seaborn
+watchdog
+xgboost
