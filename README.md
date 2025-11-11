@@ -232,4 +232,4 @@ We also express our sincere gratitude to [Maria Eichlseder](https://github.com/m
 ---
 
 ## License
-This project is licensed under the terms specified in the ``LICENSE`` file (MIT License).
+This project is licensed under the terms specified in the [LICENSE](LICENSE) file (MIT License).
