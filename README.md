@@ -1,32 +1,28 @@
 # Enhancing IoV Security Using Lightweight Cryptographic Algorithm - ASCON
-
 This project proposes a two-layer security framework for Internet of Vehicles (IoV) environments. It combines the lightweight cryptographic algorithm, ASCON, with a machine-learning-based Network Intrusion Detection System (NIDS) to secure both vehicular communication and vehicular networks.
 
 ---
 
 ## Table of Contents
-- [Enhancing IoV Security Using Lightweight Cryptographic Algorithm - ASCON](#enhancing-iov-security-using-lightweight-cryptographic-algorithm---ascon)
-  - [Table of Contents](#table-of-contents)
-  - [Project Overview](#project-overview)
-  - [Hardware Components](#hardware-components)
-  - [Software Requirements](#software-requirements)
-    - [On Raspberry Pi](#on-raspberry-pi)
-    - [On HiveMQ Cloud](#on-hivemq-cloud)
-  - [Implementation Steps](#implementation-steps)
-  - [Implementation Description](#implementation-description)
-    - [Sender Side Implementation](#sender-side-implementation)
-    - [Receiver Side Implementation](#receiver-side-implementation)
-    - [Machine Learning-Based NIDS Implementation](#machine-learning-based-nids-implementation)
-    - [Comparison of Lightweight Cryptographic Algorithms](#comparison-of-lightweight-cryptographic-algorithms)
-  - [Future Improvements](#future-improvements)
-  - [Acknowledgements](#acknowledgements)
-  - [License](#license)
+- [Project Overview](#project-overview)
+- [Hardware Components](#hardware-components)
+- [Software Requirements](#software-requirements)
+  - [On Raspberry Pi](#on-raspberry-pi)
+  - [On HiveMQ Cloud](#on-hivemq-cloud)
+- [Implementation Steps](#implementation-steps)
+- [Implementation Description](#implementation-description)
+  - [Sender Side Implementation](#sender-side-implementation)
+  - [Receiver Side Implementation](#receiver-side-implementation)
+  - [Machine Learning-Based NIDS Implementation](#machine-learning-based-nids-implementation)
+  - [Comparison of Lightweight Cryptographic Algorithms](#comparison-of-lightweight-cryptographic-algorithms)
+- [Future Improvements](#future-improvements)
+- [Acknowledgements](#acknowledgements)
+- [License](#license)
 
 ---
 
 ## Project Overview
 This project presents a comprehensive security framework designed to strengthen the Internet of Vehicles (IoV) ecosystem. The framework addresses two fundamental aspects of IoV security:
-
 - **Vehicular Communication Security:** Implementation of the lightweight cryptographic algorithm, ASCON, to secure data transmission between vehicles and infrastructure.
 - **Vehicular Network Security:** Integration of a Network Intrusion Detection System (NIDS) using a machine learning-based ensemble voting classifier to ensure anomaly detection and resilience against cyberattacks.
 
@@ -95,7 +91,7 @@ The script implemented on sender nodes performs the following actions:
 - Encrypts detected images using the ASCON encryption algorithm.
 - Publishes the encrypted data securely to the MQTT broker (HiveMQ Cloud) using ``paho-mqtt``.
 
-**MQTT Setup and Connection**
+**(A) MQTT Setup and Connection**
 ```python
 client = paho.Client(callback_api_version = paho.CallbackAPIVersion.VERSION2,
                      client_id = "Enter the username configured for Sender 2", 
@@ -107,7 +103,7 @@ client.loop_start()
 ```
 A secure TLS-encrypted connection is established between the sender and the HiveMQ Cloud broker using MQTT over port ``8883``.
 
-**Image Detection and Encryption**
+**(B) Image Detection and Encryption**
 ```python
 class NewImageHandler(FileSystemEventHandler):
     def __init__(self, client):
@@ -122,7 +118,7 @@ class NewImageHandler(FileSystemEventHandler):
 ```
 The ``watchdog`` library monitors the specified folder for new image files. When a new image is detected, the ASCON encryption function (executed via the ``ASCON.demo_aead`` function) is called to generate the encrypted ciphertext, key, nonce, and associated data.
 
-**Encrypted Data Publishing**
+**(C) Encrypted Data Publishing**
 ```python
 client.publish("Topic_Name/key2", payload = parameters['key'], qos = 1)
 client.publish("Topic_Name/nonce2", payload = parameters['nonce'], qos = 1)
@@ -140,7 +136,7 @@ The script implemented on the central receiver (server) node  performs the follo
 - Receives the ASCON-encrypted image data from multiple sender nodes.
 - Decrypts the received data using the ASCON decryption algorithm and reconstructs the original images.
 
-**MQTT Subscription and Message Handling**
+**(A) MQTT Subscription and Message Handling**
 ```python
 client.subscribe("Topic_Name/#", qos = 1)
 client.on_message = on_message
@@ -148,7 +144,7 @@ client.loop_forever()
 ```
 The receiver subscribes to all topics under ``"Topic_Name/#"`` and triggers the ``on_message()`` callback function when new payloads are received.
 
-**ASCON Decryption and Image Reconstruction**
+**(B) ASCON Decryption and Image Reconstruction**
 ```python
 def decrypt_image(key_channel, nonce_channel, associateddata_channel, cipher_channel, output_folder):
     decrypted_plaintext = ASCON.ascon_decrypt(key, nonce, associateddata, ciphertext, variant = "Ascon-128")
@@ -163,7 +159,7 @@ After all required encrypted components (``key``, ``nonce``, ``associated_data``
 
 This notebook implements a machine learning-based NIDS trained on the CICIDS-2017 dataset to secure vehicular communication networks.
 
-**Data Preprocessing**
+**(A) Data Preprocessing**
 ```python
 df = pd.read_csv(r"Enter the path of the CICIDS2017 dataset")
 df = df[df['Label'].isin(['BENIGN', 'DoS'])]
@@ -172,7 +168,7 @@ df = df.fillna(0)
 ```
 The dataset is filtered to include only the Denial of Service (DoS) attack, which is among the most relevant attack types in IoV environments. The filtered dataset is then normalized and cleaned for training.
 
-**Model Training and Evaluation**
+**(B) Model Training and Evaluation**
 ```python
 classifiers = [
     ('KNN', KNeighborsClassifier()),
@@ -187,7 +183,7 @@ voting_clf.fit(X_train, y_train)
 ```
 Several classical machine learning algorithms are trained individually and then combined into a voting classifier for improved performance and reliability.
 
-**Performance Analysis**
+**(C) Performance Analysis**
 ```python
 print("Accuracy:", accuracy_voting)
 print("Precision:", precision_voting)
@@ -225,7 +221,7 @@ While the current implementation effectively secures vehicular communication and
 ---
 
 ## Acknowledgements
-This project was a collaborative effort developed between August 2023 and May 2024. Special thanks to my fellow contributors, S. Sai Eshwar and Nivetha Elango, for their valuable contributions, and to our supervisors, Dr. Kaythry Pandurangan and Mrs. Bhuvaneshwari A. J., for their continuous guidance and support.
+This project was submitted as my undergraduate thesis (Final-Year Project) at the Department of Electronics and Communication Engineering, SSN College of Engineering, Chennai, Tamil Nadu. It was a collaborative effort developed between August 2023 and May 2024. Special thanks to my fellow contributors, S. Sai Eshwar and Nivetha Elango, for their valuable contributions, and to our supervisors, Dr. Kaythry Pandurangan and Mrs. Bhuvaneshwari A. J., for their continuous guidance and support.
 
 We also express our sincere gratitude to [Maria Eichlseder](https://github.com/meichlseder) and [Han Wu](https://github.com/wuhanstudio) for their publicly available implementations of the ASCON and PRESENT algorithms, respectively. The scripts [Implementation/ascon.py](Implementation/ascon.py) and [Algorithms/present_image_encryption.ipynb](Algorithms/present_image_encryption.ipynb) in this repository were largely adapted from their work. Implementations of the TEA and AES algorithms in the [Algorithms](Algorithms/) directory were adapted from publicly available educational and open-source references.
 
