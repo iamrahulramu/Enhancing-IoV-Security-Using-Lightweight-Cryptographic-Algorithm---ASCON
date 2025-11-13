@@ -73,7 +73,7 @@ To run and validate the proposed framework, follow the steps below:
    - Replace the placeholder values with your HiveMQ Cloud cluster credentials.
    - The receiver node can be another Raspberry Pi or a standard computer (since it acts as the central server, it is not constrained by mobility or power limitations).
 
-Upon successful execution, two separate directories will be automatically created on the server device - one corresponding to each sender node. Every time an image is transmitted from a sender, the decrypted images are stored in their respective directories. 
+Upon successful execution, two separate directories will be automatically created on the server device - one corresponding to each sender node. Whenever a new image is added to the designated ``watch_dir`` directory (which stores input images for transmission) in the [Implementation/sender_side.py](Implementation/sender_side.py) script, the sender node automatically reads the image, encrypts it and transmits it to the receiver node. Each transmitted image is then decrypted and stored in the corresponding directory on the receiver side. 
 
 (_**NOTE**: Always execute the receiver-side program before the sender-side programs. This ensures that the MQTT subscriptions are active before the senders begin transmitting data._)
 
